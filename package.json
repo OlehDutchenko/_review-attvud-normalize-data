@@ -4,11 +4,13 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest --ui",
     "dev": "tsc --watch",
     "build": "tsc"
   },
-  "dependencies": {
-    "typescript": "^4.7.4"
+  "devDependencies": {
+    "@vitest/ui": "^0.18.1",
+    "typescript": "^4.7.4",
+    "vitest": "^0.18.1"
   }
 }

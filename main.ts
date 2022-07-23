@@ -1,36 +1,55 @@
 interface DataField {
-    id: number;
-    text: string;
+  id: number;
+  text: string;
 }
 
 type Lang = string;
 
-type Data = Record<Lang, DataField>;
+type Data = Record<Lang, DataField | null>;
+
+type ResulType = Data | ResultItem[];
 
 interface ResultItem {
-    lang: string;
-    id: number;
-    text: string;
+  lang: string;
+  id: number;
+  text: string;
 }
 
 // ---------
+function handleArr(data: Data) {
+  let result = [];
 
-const data: Data = {
-    uk: { id: 1, text: 'Привіт!' },
-    en: { id: 2, text: 'Hello!' },
-    fr: { id: 3, text: 'Salut!' }
-};
+  for (let key in data) {
+    if (key === "en") result[0] = { lang: key, ...data[key] };
+    if (key === "uk") result[1] = { lang: key, ...data[key] };
+    if (key === "fr") result[2] = { lang: key, ...data[key] };
+  }
 
-const expectedResult: ResultItem[] = [
-    { lang: 'en', id: 2, text: 'Hello!' },
-    { lang: 'uk', id: 1, text: 'Привіт!' },
-    { lang: 'fr', id: 3, text: 'Salut!' }
-];
+  result = result.filter((item) => item.id !== undefined);
 
-console.log('Expected:');
-console.log(JSON.stringify(expectedResult, undefined, '  '));
+  return result;
+}
 
-// Your code
+function handleObj(data: ResultItem[]) {
+  let result: Data = {};
 
-// console.log('Result:');
-// console.log(JSON.stringify(myResult, undefined, '  '));
+  for (let key of data) {
+    const { lang, ...rest } = key;
+
+    if (lang === "en") result.en = { ...rest };
+    if (lang === "uk") result.en = { ...rest };
+    if (lang === "fr") result.en = { ...rest };
+  }
+
+  if (result.en === undefined) result.en = null;
+  if (result.uk === undefined) result.uk = null;
+  if (result.fr === undefined) result.fr = null;
+
+  return result;
+}
+
+function handleData(data: ResulType) {
+  return Array.isArray(data) ? handleObj(data) : handleArr(data);
+}
+
+export default handleData;
