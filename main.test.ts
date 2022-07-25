@@ -1,4 +1,4 @@
-import handleData from "./main";
+import { normalizeToArray, normalizeToData } from "./main";
 
 describe("handleData", () => {
   it("Should return currect result", () => {
@@ -7,7 +7,7 @@ describe("handleData", () => {
       en: { id: 2, text: "Hello!" },
       fr: { id: 3, text: "Salut!" },
     };
-    expect(handleData(data)).toStrictEqual([
+    expect(normalizeToArray(data)).toStrictEqual([
       { lang: "en", id: 2, text: "Hello!" },
       { lang: "uk", id: 1, text: "Привіт!" },
       { lang: "fr", id: 3, text: "Salut!" },
@@ -20,8 +20,7 @@ describe("handleData", () => {
       en: null,
       fr: undefined,
     };
-    console.log(data);
-    expect(handleData(data)).toStrictEqual([
+    expect(normalizeToArray(data)).toStrictEqual([
       { lang: "uk", id: 1, text: "Привіт!" },
     ]);
   });
@@ -34,7 +33,7 @@ describe("handleData", () => {
       jp: { id: 5, text: "こんにちは!" },
       fr: { id: 3, text: "Salut!" },
     };
-    expect(handleData(data)).toStrictEqual([
+    expect(normalizeToArray(data)).toStrictEqual([
       { lang: "en", id: 2, text: "Hello!" },
       { lang: "uk", id: 1, text: "Привіт!" },
       { lang: "fr", id: 3, text: "Salut!" },
@@ -43,7 +42,7 @@ describe("handleData", () => {
 
   it("Should be able to flip result", () => {
     const data = [{ lang: "en", id: 2, text: "Hello!" }];
-    expect(handleData(data)).toStrictEqual({
+    expect(normalizeToData(data)).toStrictEqual({
       uk: null,
       en: { id: 2, text: "Hello!" },
       fr: null,
